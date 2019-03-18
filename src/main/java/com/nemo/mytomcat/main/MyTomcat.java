@@ -31,7 +31,7 @@ public class MyTomcat {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(port);
-            System.out.println("com.nemo.mytomcat.main.MyTomcat is start...");
+            System.out.println("myTomcat is start...");
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -79,13 +79,7 @@ public class MyTomcat {
             MyServlet myServlet = myServletClass.newInstance();
 
             myServlet.service(myRequest, myResponse);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
