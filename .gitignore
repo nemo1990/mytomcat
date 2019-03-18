@@ -5,6 +5,7 @@
 # IntelliJ project files
 .idea
 .gradle
+gradle
 *.iml
 out
 gen
