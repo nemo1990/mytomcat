@@ -20,6 +20,8 @@ public class MyTomcat {
 
     private Map<String, String> urlServletMap = new HashMap<>();
 
+    private Map<String, Class<? extends MyServlet>> urlServletClassMap = new HashMap<>();
+
     public MyTomcat(int port) {
         this.port = port;
     }
@@ -61,24 +63,30 @@ public class MyTomcat {
 
     private void initServletMapping() {
         for(ServletMapping servletMapping : ServletMappingConfig.servletMappingList) {
-            urlServletMap.put(servletMapping.getUrl(), servletMapping.getClazz());
+//            urlServletMap.put(servletMapping.getUrl(), servletMapping.getClazz());
+            urlServletClassMap.put(servletMapping.getUrl(), servletMapping.getMyServletClazz());
         }
     }
 
     private void dispatch(MyRequest myRequest, MyResponse myResponse) {
-        String clazz = urlServletMap.get(myRequest.getUrl());
+//        String clazz = urlServletMap.get(myRequest.getUrl());
+
+        Class<? extends MyServlet> myServletClazz = urlServletClassMap.get(myRequest.getUrl());
 
         //反射
         try {
-            if(clazz == null) {
+//            if(clazz == null) {
+            if(myServletClazz == null) {
                 myResponse.write("FUCK");
                 return;
             }
 
-            Class<MyServlet> myServletClass = (Class<MyServlet>) Class.forName(clazz);
-            MyServlet myServlet = myServletClass.newInstance();
+//            Class<MyServlet> myServletClass = (Class<MyServlet>) Class.forName(clazz);
+//            MyServlet myServlet = myServletClass.newInstance();
 
-            myServlet.service(myRequest, myResponse);
+            MyServlet myServlet = myServletClazz.newInstance();
+
+                    myServlet.service(myRequest, myResponse);
         } catch (Exception e) {
             e.printStackTrace();
         }
